@@ -2,3 +2,6 @@ bin
 malloc_test
 .DS_Store
 ._*
+.vscode
+*dSYM
+*.so

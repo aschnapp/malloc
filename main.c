@@ -1,9 +1,15 @@
 #include <stdio.h>
-#include "libmalloc/src/malloc.h"
+#include "src/malloc.h"
 
 int main() {
-    char *str = malloc(2);
-    str[0] = 'a';
-    str[1] = 0;
-    printf("%s\n", str);
+    char *ptr = malloc(1000000);
+    (void)ptr;
+    // int i;
+    // for (i = 0; i < 1000; i ++)
+    // {
+    //     ptr[i] = '1';
+    // }
+    // ptr[i] = 0;
+    // printf("%s\n", ptr);
+    // free(ptr);
 }
