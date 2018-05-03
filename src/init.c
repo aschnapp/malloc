@@ -68,7 +68,6 @@ int block_init(size_t size, t_heap **head, t_block **avail)
   heap_end = ((char *)((*avail)->heap) + 1) + ((t_heap *)((*avail)->heap))->size;
   free = (t_block *)((char *)(*avail + 1) + size);
   IFRET((char *)(*avail + 1) + size > heap_end, 1);
-  DBG("%d\n", (*avail)->size);
   if ((char *)(free + 2) < heap_end && (*avail)->size * -1 > (int)size + (int)sizeof(t_block) * 2)
   {
     free->size = (*avail)->size + size + sizeof(t_block);

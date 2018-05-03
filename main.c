@@ -13,23 +13,23 @@ int main() {
         // printf("%d\n", i);
         if(i == 95)
             printf("");
-        test[i] = malloc(1000);
+        test[i] = malloc(200000);
         if (!test[i]) {
             printf("Error!\n");
             i--;
             break;
         }
     }
-    // show_alloc_mem();
+    show_alloc_mem();
     printf("\n");
     printf("///////////////malloc finished///////////////\n");
     printf("\n");
     (void)j;
-    free(test[2]);
-    test[1] = realloc(test[1], 1500);
+    free((char*)test[2] + 100);
+    test[1] = realloc(test[1], 200601);
+    show_alloc_mem();
 
     // for (j = 0; j < i; j++) {
     //     free(test[j]);
     // }
-    show_alloc_mem();
 }

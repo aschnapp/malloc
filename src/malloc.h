@@ -5,6 +5,7 @@
 # include <stdint.h>
 # include <sys/resource.h>
 # include <limits.h>
+#  include <stdio.h>
 # ifdef DEBUG_MODE
 #  include <stdio.h>
 #  define DBG(f, ...) printf("%s::%s> " f, __FILE__, __func__, ##__VA_ARGS__)
@@ -50,6 +51,7 @@ typedef struct  s_head
 t_head  g_head;
 
 t_heap  *traverse_heap(size_t size, t_heap **head);
+t_heap  **find_size(size_t size);
 int     block_init(size_t size, t_heap **head, t_block **avail);
 int     create_add_block_to_head(t_block **head);
 int     create_add_heap_to_head(size_t size, t_heap **head);
