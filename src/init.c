@@ -47,16 +47,19 @@ int init_first_block(size_t size, t_heap **heap)
   t_block *first_free;
 
   first_used = (t_block *)((*heap) + 1);
-  first_free = (t_block *)
-    ((char *)(*heap) + sizeof(t_heap) + sizeof(t_block) + size);
   first_used->size = (int)size;
   first_used->heap = *heap;
   first_used->next = NULL;
   first_used->prev = NULL;
   (*heap)->head = first_used;
-  first_free->size = ((*heap)->size - size - (sizeof(t_block) * 2)) * -1;
-  first_free->heap = *heap;
-  (*heap)->free_head = first_free;
+  if ((*heap)->size > first_used->size + sizeof(t_block) * 2)
+  {
+    first_free = (t_block *)
+      ((char *)(*heap) + sizeof(t_heap) + sizeof(t_block) + size);
+    first_free->size = ((*heap)->size - size - (sizeof(t_block) * 2)) * -1;
+    first_free->heap = *heap;
+    (*heap)->free_head = first_free;
+  }
   return 0;
 }
 
