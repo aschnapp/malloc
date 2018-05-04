@@ -13,7 +13,7 @@ os.chdir(os.path.dirname(os.path.abspath(sys.argv[0])))
 bin_folder = "bin/"
 test_files = ["test0.c", "test1.c", "test2.c", "test3.c",
         "test3++.c", "test4.c"]
-lib_inc = "../"
+lib_inc = "libft_malloc.so"
 
 #############################################################
 # functions
@@ -38,7 +38,7 @@ def cmd_output_only(com):
     return output
 
 def cmp_output(prog, to_compare):
-    com = "./run.sh ./" + bin_folder + prog
+    com = "./" + bin_folder + prog
     output = cmd_output(com.split())
     if output[0] == to_compare:
         print("OK")
@@ -54,7 +54,7 @@ cmd.call(com.split())
 
 for f in test_files:
     output_file = f[:-2]
-    com = "gcc -Wno-unused-result -o " + bin_folder + output_file + " " + f + " -I " + lib_inc
+    com = "gcc -Wno-unused-result -g -o " + bin_folder + output_file + " " + f + " " + lib_inc
     cmd.call(com.split())
 
 #############################################################
