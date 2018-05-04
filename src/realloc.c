@@ -17,6 +17,26 @@ t_block *dup_and_free(t_block *block, size_t size, void *ptr)
   return (t_block *)(new - sizeof(t_block));
 }
 
+t_block  *shrink_block(t_block **block, size_t size)
+{
+  int diff;
+  t_block *new_free;
+
+  diff = ((int)size - (*block)->size) * -1;
+  if (diff > (int)(sizeof(t_block) * 2))
+  {
+    new_free = (t_block *)((char *)(*block + 1) + size);
+    new_free->size = (diff - sizeof(t_block)) * -1;
+    new_free->heap = (*block)->heap;
+    new_free->prev = NULL;
+    new_free->next = ((t_heap *)(new_free->heap))->free_head;
+    ((t_heap *)(new_free->heap))->free_head = new_free;
+    free(new_free);
+  }
+  (*block)->size = (int)size;
+  return *block;
+}
+
 void  enlarge_block(t_block **block, t_block *free, size_t size)
 {
   int diff;
@@ -60,7 +80,7 @@ t_block *enlarge_or_alloc(t_block *block, size_t size, void* ptr)
   to_heap = find_size(size);
   orig_heap = find_size(block ->size);
   next_block = (t_block *)((char *)ptr + block->size);
-  if (orig_heap != to_heap)
+  if (orig_heap != to_heap || *to_heap == g_head.l)
     return dup_and_free(block, size, ptr);
   if (next_block->size < 0 && block->size - next_block->size >= (int)size)
     enlarge_block(&block, next_block, size);
@@ -74,9 +94,11 @@ void  *realloc(void *ptr, size_t size)
   t_block *header;
 
   header = ((t_block *)ptr) - 1;
+  if (!header->size)
+    return NULL;
   if (header->size < (int)size)
     header = enlarge_or_alloc(header, size, ptr);
   else if (header->size > (int)size)
-    return ptr;
-  return ptr;
+    header = shrink_block(&header, size);
+  return (void *)(header + 1);
 }

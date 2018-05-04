@@ -11,6 +11,21 @@ int create_add_heap_to_head(size_t size, t_heap **head)
   return 0;
 }
 
+void remove_block_from_list(t_block *block, int type)
+{
+  if (block->next)
+    ((t_block *)(block->next))->prev = block->prev;
+  if (block->prev)
+    ((t_block *)(block->prev))->next = block->next;
+  else
+  {
+    if (type)
+      ((t_heap *)(block->heap))->head = block->next;
+    else
+      ((t_heap *)(block->heap))->free_head = block->next;
+  }
+}
+
 t_block *find_avail_block(size_t size, t_heap *heap)
 {
   t_block *head;

@@ -1,5 +1,16 @@
 #include "malloc.h"
 
+void  init_global(void)
+{
+  g_head.ps = getpagesize();
+  g_head.init = 1;
+  g_head.m_size = getpagesize() * 32;
+  g_head.s_size = getpagesize();
+  g_head.s = NULL;
+  g_head.m = NULL;
+  g_head.l = NULL;
+}
+
 t_heap **find_size(size_t size)
 {
   IFRET(size <= g_head.s_size, &(g_head.s));

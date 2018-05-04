@@ -23,7 +23,7 @@ OBJS := $(patsubst $(SRCDIR)/%.c, $(BINDIR)/%.o, $(SRCS))
 DEPS := $(patsubst $(SRCDIR)/%.c, $(BINDIR)/%.d, $(SRCS))
 
 CC := gcc
-CCFLAGS := -Wall -Wextra -Werror -fPIC -DDEBUG_MODE -g
+CCFLAGS := -Wall -Wextra -Werror -fPIC
 LD := gcc
 LDFLAGS := -shared
 
@@ -38,14 +38,16 @@ all: $(NAME)
 $(NAME): $(OBJS)
 	@echo "$(GREEN)[$(CYAN)LD$(GREEN)] $(WHITE)$(BINDIR)/$(NAME)$(RESET)"
 	@$(CC) $(LDFLAGS) -o $(NAME) $(OBJS)
+	@rm -f libft_malloc.so test/libft_malloc.so test/$(NAME)
+	@ln -s $(NAME) libft_malloc.so
+	@cp $(NAME) test/
+	@cp libft_malloc.so test/
 
 $(BINDIR)/%.o: $(SRCDIR)/%.c
 	@echo "$(GREEN)[$(YELLOW)CC$(GREEN)] $(WHITE)$<$(RESET)"
 	@mkdir -p $(shell dirname $@)
 	@$(CC) -MM -MP -MT $@ -I$(SRCDIR) $(CCFLAGS) $< > $(patsubst %.o,%.d,$@)
 	@$(CC) -I$(SRCDIR) -c $< $(CCFLAGS) -o $@
-	@rm -f libft_malloc.so
-	@ln -s $(NAME) libft_malloc.so
 
 -include $(DEPS)
 

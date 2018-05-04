@@ -1,46 +1,5 @@
 #include "malloc.h"
 
-void  init_global(void)
-{
-  g_head.ps = getpagesize();
-  g_head.init = 1;
-  g_head.m_size = getpagesize() * 32;
-  g_head.s_size = getpagesize();
-  g_head.s = NULL;
-  g_head.m = NULL;
-  g_head.l = NULL;
-}
-
-int  heap_init(size_t size, t_heap **heap)
-{
-  size_t  heap_size;
-  void    *tmp;
-
-  size += (sizeof(t_block));
-  if (size > g_head.m_size)
-    heap_size = (size / g_head.ps * g_head.ps < size 
-      ? g_head.ps * (size / g_head.ps + 1) 
-      : g_head.ps * size / g_head.ps);
-  else if (size > g_head.s_size && size <= g_head.m_size)
-    heap_size = g_head.m_size * 100;
-  else if (size <= g_head.s_size)
-    heap_size = g_head.s_size * 100;
-  else 
-    return 1;
-  tmp = mmap(0, heap_size, PROT_READ | PROT_WRITE,
-          MAP_ANON | MAP_PRIVATE, -1, 0);
-  IFRET(tmp == MAP_FAILED, 1);
-  heap_size -= sizeof(t_heap);
-  ((t_heap *)tmp)->size = heap_size;
-  ((t_heap *)tmp)->head = NULL;
-  ((t_heap *)tmp)->free_head = NULL;
-  ((t_heap *)tmp)->next = NULL;
-  ((t_heap *)tmp)->prev = NULL;
-  *heap = (t_heap *)tmp;
-  init_first_block(size - sizeof(t_block), heap);
-  return 0;
-}
-
 int init_first_block(size_t size, t_heap **heap)
 {
   t_block *first_used;
@@ -87,4 +46,35 @@ int block_init(size_t size, t_heap **head, t_block **avail)
   (*head)->head->prev = (void *)(*avail);
   (*head)->head = *avail;
   return 0;
+}
+
+void  remove_right_block(t_block *block)
+{
+  remove_block_from_list(block, 0);
+  block->next = NULL;
+  block->prev = NULL;
+}
+
+void  free_block(t_block *block)
+{
+  t_block *right_block;
+
+  remove_block_from_list(block, 1);
+  if (block->size)
+  {
+    right_block = (t_block *)(((char *)(block + 1)) + block->size);
+    block->size *= -1;
+    if (right_block->size < 0)
+    {
+      block->size += right_block->size - sizeof(t_block);
+      remove_right_block(right_block);
+    }
+  }
+  block->next = ((t_heap *)(block->heap))->free_head;
+  if (((t_heap *)(block->heap))->free_head)
+    ((t_heap *)(block->heap))->free_head->prev = block;
+  block->prev = NULL;
+  ((t_heap *)(block->heap))->free_head = block;
+  if (((t_heap *)(block->heap))->head == NULL && ((t_heap *)(block->heap))->next && ((t_heap *)(block->heap)) != g_head.l)
+    unmap_heap((t_heap *)(block->heap));
 }

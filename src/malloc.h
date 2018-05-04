@@ -14,7 +14,6 @@
 # endif
 # define IFRET(x, y) if (x) return y
 # define ISFREE (size) size < 0;
-# define FINDSIZE(size, h) (size <= h.s_size ? h.s : size <= h.m_size ? h.m : h.l) 
 
 /*
 **size < 0 free
@@ -53,6 +52,9 @@ t_head  g_head;
 t_heap  *traverse_heap(size_t size, t_heap **head);
 t_heap  **find_size(size_t size);
 int     block_init(size_t size, t_heap **head, t_block **avail);
+void    free_block(t_block *block);
+void    unmap_heap(t_heap *heap);
+void    remove_block_from_list(t_block *block, int type);
 int     create_add_block_to_head(t_block **head);
 int     create_add_heap_to_head(size_t size, t_heap **head);
 void    init_global(void);
@@ -61,7 +63,10 @@ int     heap_init(size_t size, t_heap **heap);
 void    *malloc(size_t size);
 void    free(void *ptr);
 void    *realloc(void *ptr, size_t size);
-void    show_alloc_mem();
+void    show_alloc_mem(void);
+void    show_all_mem_test(void);
 void    remove_heap_head(t_heap **global, t_heap *heap);
+void    ft_putnbr(int n);
+void    ft_putnbr_hex(uintptr_t nb);
 
 #endif
