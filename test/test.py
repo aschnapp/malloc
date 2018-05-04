@@ -54,7 +54,7 @@ cmd.call(com.split())
 
 for f in test_files:
     output_file = f[:-2]
-    com = "gcc -Wno-unused-result -g -o " + bin_folder + output_file + " " + f + " " + lib_inc
+    com = "gcc -Wno-unused-result -o " + bin_folder + output_file + " " + f + " " + lib_inc
     cmd.call(com.split())
 
 #############################################################
