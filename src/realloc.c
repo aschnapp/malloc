@@ -92,7 +92,9 @@ t_block *enlarge_or_alloc(t_block *block, size_t size, void* ptr)
 void  *realloc(void *ptr, size_t size)
 {
   t_block *header;
-
+  
+  IFRET(!ptr, NULL);
+  IFRET(!check_ptr_ownership(ptr), NULL);
   header = ((t_block *)ptr) - 1;
   if (!header->size)
     return NULL;

@@ -23,9 +23,9 @@ OBJS := $(patsubst $(SRCDIR)/%.c, $(BINDIR)/%.o, $(SRCS))
 DEPS := $(patsubst $(SRCDIR)/%.c, $(BINDIR)/%.d, $(SRCS))
 
 CC := gcc
-CCFLAGS := -Wall -Wextra -Werror -fPIC
-LD := gcc
-LDFLAGS := -shared
+CCFLAGS := -Wall -Wextra -Werror -fPIC -g
+LD := gcc 
+LDFLAGS := -shared -Wl,-undefined  -Wl,dynamic_lookup
 
 RESET := $(shell echo "\033[0m")
 WHITE := $(shell echo "\033[1;37m")

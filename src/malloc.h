@@ -25,6 +25,7 @@ typedef struct  s_block
   void    *next;
   void    *prev;
   void    *heap;
+  int     checksum;
 }               t_block;
 
 typedef struct  s_heap
@@ -62,6 +63,7 @@ int     init_first_block(size_t size, t_heap **heap);
 int     heap_init(size_t size, t_heap **heap);
 void    *malloc(size_t size);
 void    free(void *ptr);
+int     check_ptr_ownership(void *ptr);
 void    *realloc(void *ptr, size_t size);
 void    show_alloc_mem(void);
 void    show_all_mem_test(void);

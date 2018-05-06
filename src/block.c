@@ -7,6 +7,7 @@ int init_first_block(size_t size, t_heap **heap)
 
   first_used = (t_block *)((*heap) + 1);
   first_used->size = (int)size;
+  first_used->checksum = (int)size;
   first_used->heap = *heap;
   first_used->next = NULL;
   first_used->prev = NULL;
@@ -33,6 +34,7 @@ int block_init(size_t size, t_heap **head, t_block **avail)
   if ((char *)(free + 2) < heap_end && (*avail)->size * -1 > (int)size + (int)sizeof(t_block) * 2)
   {
     free->size = (*avail)->size + size + sizeof(t_block);
+    free->checksum = (*avail)->size + size + sizeof(t_block);
     free->next = (*head)->free_head;
     free->heap = *head;
     if ((*head)->free_head)
@@ -41,6 +43,7 @@ int block_init(size_t size, t_heap **head, t_block **avail)
   }
   (*avail)->heap = *head;
   (*avail)->size = (int)size;
+  (*avail)->checksum = (int)size;
   (*avail)->next = (*head)->head;
   (*avail)->prev = NULL;
   (*head)->head->prev = (void *)(*avail);
