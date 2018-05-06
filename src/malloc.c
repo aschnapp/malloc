@@ -22,7 +22,7 @@ void  *malloc(size_t size)
 {
   t_heap **heap;
   t_heap *tmp;
-
+  
   IFRET(size > INT_MAX || size < 0, NULL);
   if (!g_head.init)
     init_global();
@@ -30,7 +30,7 @@ void  *malloc(size_t size)
   if ((*heap) == NULL || size > g_head.m_size) 
   {
     IFRET(create_add_heap_to_head(size, heap), NULL);
-    return (void *)(((char *)(*heap)) + sizeof(t_heap) + sizeof(t_block));
+    return (void *)(((char *)(*heap + 1)) + sizeof(t_block));
   }
   IFRET(!(tmp = traverse_heap(size, heap)), NULL);
   return (void *)(tmp->head + 1);

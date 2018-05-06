@@ -22,10 +22,10 @@
 typedef struct  s_block
 {
   int     size;
+  int     checksum;
   void    *next;
   void    *prev;
   void    *heap;
-  int     checksum;
 }               t_block;
 
 typedef struct  s_heap

@@ -11,7 +11,11 @@ int main() {
     int j;
     char *test;
     test = malloc(16);
-    free(test + 5);
+    // free(test);
+    realloc(test, 100);
+    test[0] = 'b';
+    test[1] = 'a';
+    test[2] = 0;
     // for (i = 0; i < AMOUNT; i++) {
     //     // printf("%d\n", i);
     //     if(i == 95)

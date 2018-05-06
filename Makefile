@@ -23,9 +23,9 @@ OBJS := $(patsubst $(SRCDIR)/%.c, $(BINDIR)/%.o, $(SRCS))
 DEPS := $(patsubst $(SRCDIR)/%.c, $(BINDIR)/%.d, $(SRCS))
 
 CC := gcc
-CCFLAGS := -Wall -Wextra -Werror -fPIC -g
-LD := gcc 
-LDFLAGS := -shared -Wl,-undefined  -Wl,dynamic_lookup
+CCFLAGS := -Wall -Wextra -Werror -fPIC
+LD := gcc
+LDFLAGS := -shared
 
 RESET := $(shell echo "\033[0m")
 WHITE := $(shell echo "\033[1;37m")
@@ -40,8 +40,6 @@ $(NAME): $(OBJS)
 	@$(CC) $(LDFLAGS) -o $(NAME) $(OBJS)
 	@rm -f libft_malloc.so test/libft_malloc.so test/$(NAME)
 	@ln -s $(NAME) libft_malloc.so
-	@cp $(NAME) test/
-	@cp libft_malloc.so test/
 
 $(BINDIR)/%.o: $(SRCDIR)/%.c
 	@echo "$(GREEN)[$(YELLOW)CC$(GREEN)] $(WHITE)$<$(RESET)"
@@ -54,6 +52,7 @@ $(BINDIR)/%.o: $(SRCDIR)/%.c
 clean:
 	@echo "$(CYAN)Cleaning object files"
 	@rm -rf $(BINDIR)
+	@rm $(NAME) libft_malloc.so
 
 fclean: clean
 	@echo "$(CYAN)Cleaning generated binary"

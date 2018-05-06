@@ -93,8 +93,8 @@ void  *realloc(void *ptr, size_t size)
 {
   t_block *header;
   
-  IFRET(!ptr, NULL);
-  IFRET(!check_ptr_ownership(ptr), NULL);
+  IFRET(!ptr || (!g_head.l && !g_head.m && !g_head.s), malloc(size));
+  IFRET(check_ptr_ownership(ptr), NULL);
   header = ((t_block *)ptr) - 1;
   if (!header->size)
     return NULL;
