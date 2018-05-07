@@ -6,11 +6,23 @@
 /*   By: aschnapp <aschnapp@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/06 19:06:29 by aschnapp          #+#    #+#             */
-/*   Updated: 2018/05/06 19:07:56 by aschnapp         ###   ########.fr       */
+/*   Updated: 2018/05/06 19:45:04 by aschnapp         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "malloc.h"
+
+void	init_block_values(t_block **block, t_heap **head, size_t size)
+{
+	(*block)->heap = *head;
+	(*block)->size = (int)size;
+	(*block)->checksum = (int)size;
+	(*block)->next = (*head)->head;
+	(*block)->prev = NULL;
+	if ((*head)->head)
+		(*head)->head->prev = (void *)(*block);
+	(*head)->head = (*block);
+}
 
 int		init_first_block(size_t size, t_heap **heap)
 {
@@ -55,13 +67,7 @@ int		block_init(size_t size, t_heap **head, t_block **avail)
 			(*head)->free_head->prev = free;
 		(*head)->free_head = free;
 	}
-	(*avail)->heap = *head;
-	(*avail)->size = (int)size;
-	(*avail)->checksum = (int)size;
-	(*avail)->next = (*head)->head;
-	(*avail)->prev = NULL;
-	(*head)->head->prev = (void *)(*avail);
-	(*head)->head = *avail;
+	init_block_values(avail, head, size);
 	return (0);
 }
 
