@@ -6,7 +6,7 @@
 #    By: aschnapp <aschnapp@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/02/22 09:20:40 by pjha              #+#    #+#              #
-#    Updated: 2018/04/24 21:01:09 by aschnapp         ###   ########.fr        #
+#    Updated: 2018/05/06 20:19:21 by aschnapp         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ OBJS := $(patsubst $(SRCDIR)/%.c, $(BINDIR)/%.o, $(SRCS))
 DEPS := $(patsubst $(SRCDIR)/%.c, $(BINDIR)/%.d, $(SRCS))
 
 CC := gcc
-CCFLAGS := -Wall -Wextra -Werror -fPIC
+CCFLAGS := -Wall -Wextra -Werror -fPIC -DDEBUG_MODE
 LD := gcc
 LDFLAGS := -shared
 
