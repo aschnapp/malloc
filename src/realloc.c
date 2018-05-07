@@ -6,7 +6,7 @@
 /*   By: aschnapp <aschnapp@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/06 19:25:38 by aschnapp          #+#    #+#             */
-/*   Updated: 2018/05/06 19:28:22 by aschnapp         ###   ########.fr       */
+/*   Updated: 2018/05/06 20:01:28 by aschnapp         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,12 +71,7 @@ void	enlarge_block(t_block **block, t_block *free, size_t size)
 	}
 	else
 	{
-		if (free->next)
-			((t_block *)(free->next))->prev = free->prev;
-		if (free->prev)
-			((t_block *)(free->prev))->next = free->next;
-		else
-			((t_heap *)(free->heap))->free_head = free->next;
+		remove_block_from_list(free, 0);
 		free = NULL;
 	}
 	(*block)->size = size;
