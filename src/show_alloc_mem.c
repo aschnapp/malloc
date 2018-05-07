@@ -6,7 +6,7 @@
 /*   By: aschnapp <aschnapp@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/06 18:52:41 by aschnapp          #+#    #+#             */
-/*   Updated: 2018/05/06 18:55:01 by aschnapp         ###   ########.fr       */
+/*   Updated: 2018/05/06 19:37:19 by aschnapp         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,21 +99,18 @@ void	show_alloc_mem(void)
 	to_print = find_next_heap(to_print);
 	while ((uintptr_t)to_print)
 	{
-		if (to_print)
+		block_to_print = find_next_block(to_print, block_to_print);
+		find_size_print_heap(to_print, block_to_print);
+		while (block_to_print)
 		{
+			ft_putnbr_hex((uintptr_t)(block_to_print + 1));
+			write(1, " - ", 3);
+			ft_putnbr_hex((uintptr_t)(block_to_print + 1)
+				+ block_to_print->size);
+			write(1, " : ", 3);
+			ft_putnbr(block_to_print->size);
+			write(1, "\n", 1);
 			block_to_print = find_next_block(to_print, block_to_print);
-			find_size_print_heap(to_print, block_to_print);
-			while (block_to_print)
-			{
-				ft_putnbr_hex((uintptr_t)(block_to_print + 1));
-				write(1, " - ", 3);
-				ft_putnbr_hex((uintptr_t)(block_to_print + 1)
-					+ block_to_print->size);
-				write(1, " : ", 3);
-				ft_putnbr(block_to_print->size);
-				write(1, "\n", 1);
-				block_to_print = find_next_block(to_print, block_to_print);
-			}
 		}
 		to_print = find_next_heap(to_print);
 	}
