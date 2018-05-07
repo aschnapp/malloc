@@ -6,7 +6,7 @@
 /*   By: aschnapp <aschnapp@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/06 18:52:41 by aschnapp          #+#    #+#             */
-/*   Updated: 2018/05/06 19:37:19 by aschnapp         ###   ########.fr       */
+/*   Updated: 2018/05/06 19:54:46 by aschnapp         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,8 @@ void	show_alloc_mem(void)
 	while ((uintptr_t)to_print)
 	{
 		block_to_print = find_next_block(to_print, block_to_print);
+		if (!block_to_print)
+			break ;
 		find_size_print_heap(to_print, block_to_print);
 		while (block_to_print)
 		{
