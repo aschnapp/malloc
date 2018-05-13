@@ -6,7 +6,7 @@
 /*   By: aschnapp <aschnapp@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/06 19:09:52 by aschnapp          #+#    #+#             */
-/*   Updated: 2018/05/13 15:13:15 by aschnapp         ###   ########.fr       */
+/*   Updated: 2018/05/13 15:15:05 by aschnapp         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int		traverse_malloced_ptrs(t_heap *heap, void *ptr)
 			while (curr_block)
 			{
 				if (curr_block->checksum != curr_block->size)
-					break;
+					break ;
 				if ((void *)(curr_block + 1) == ptr)
 					return (0);
 				curr_block = curr_block->next;
