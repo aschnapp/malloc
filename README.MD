@@ -4,17 +4,12 @@
 Basic defragmentation if the block to right is also free.
 *Will not defrag if freeing from right to left
 
-## Basic Testing
-```python test/test.py```
+## Known Problems
+Chrome and Firefox segfaults when a pointer they pass in a pointer to be realloced that was not malloced by this malloc. 
+This realloc will return a NULL if the pointer does not belong to it, and Chrome and FF does not have the right protection.
+To see this in action: 
+1: Add a printf statement between line 102 and 103 and between 103 and 104 in realloc.c
+2: Add a printf before return (1) in check_ptr_ownership in free.c
+3: ./run.sh (/Application/{chrome app})
 
-```run.sh``` does not work very well for some reason, so modified the ```test.py``` file that was given to not include the ```run.sh``` file during tests.
-
-## Additional Tests
-```test/main.c``` and ```show_all_mem_test``` are an additional test files. Makefile should have an additional flag ```-DDEBUG_MODE``` when using these test files.
-Use the function ```show_all_mem_test``` to see all memory blocks.
-
-To compile the additional test:\
-```make && gcc -o test/bin/malloc_test test/main.c```\
-To run the additional test:\
-```./test/bin/malloc_test```
-
+It will segfault after it returns from realloc with a NULL pointer
