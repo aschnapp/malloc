@@ -6,7 +6,7 @@
 /*   By: aschnapp <aschnapp@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/06 19:18:37 by aschnapp          #+#    #+#             */
-/*   Updated: 2018/05/06 19:58:28 by aschnapp         ###   ########.fr       */
+/*   Updated: 2018/05/13 14:06:11 by aschnapp         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,7 @@ int		heap_init(size_t size, t_heap **heap)
 
 	size += (sizeof(t_block));
 	if (size > g_head.m_size)
-		heap_size = (size / g_head.ps * g_head.ps < size
-		? g_head.ps * (size / g_head.ps + 1) : g_head.ps * size / g_head.ps);
+		heap_size = ((size / g_head.ps) + (!!(size % g_head.ps))) * g_head.ps;
 	else if (size > g_head.s_size && size <= g_head.m_size)
 		heap_size = g_head.m_size * 100;
 	else if (size <= g_head.s_size)

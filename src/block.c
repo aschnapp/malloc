@@ -6,7 +6,7 @@
 /*   By: aschnapp <aschnapp@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/06 19:06:29 by aschnapp          #+#    #+#             */
-/*   Updated: 2018/05/06 19:45:04 by aschnapp         ###   ########.fr       */
+/*   Updated: 2018/05/12 23:33:12 by aschnapp         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ int		block_init(size_t size, t_heap **head, t_block **avail)
 		free->size = (*avail)->size + size + sizeof(t_block);
 		free->checksum = (*avail)->size + size + sizeof(t_block);
 		free->next = (*head)->free_head;
+		free->prev = NULL;
 		free->heap = *head;
 		if ((*head)->free_head)
 			(*head)->free_head->prev = free;

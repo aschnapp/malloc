@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_free.c                                          :+:      :+:    :+:   */
+/*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aschnapp <aschnapp@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/06 19:09:52 by aschnapp          #+#    #+#             */
-/*   Updated: 2018/05/06 19:15:03 by aschnapp         ###   ########.fr       */
+/*   Updated: 2018/05/13 15:13:15 by aschnapp         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,13 @@ int		traverse_malloced_ptrs(t_heap *heap, void *ptr)
 	curr_heap = heap;
 	while (curr_heap)
 	{
-		if (heap->head)
+		if (curr_heap->head)
 		{
 			curr_block = curr_heap->head;
 			while (curr_block)
 			{
+				if (curr_block->checksum != curr_block->size)
+					break;
 				if ((void *)(curr_block + 1) == ptr)
 					return (0);
 				curr_block = curr_block->next;
@@ -37,6 +39,9 @@ int		traverse_malloced_ptrs(t_heap *heap, void *ptr)
 
 int		check_ptr_ownership(void *ptr)
 {
+	t_block *header;
+
+	header = (t_block *)ptr - 1;
 	if (g_head.l)
 		IFRET(!traverse_malloced_ptrs(g_head.l, ptr), 0);
 	if (g_head.m)
@@ -52,11 +57,11 @@ void	free(void *ptr)
 
 	if (!ptr)
 		return ;
+	header = (t_block *)ptr - 1;
 	if (check_ptr_ownership(ptr))
 		return ;
-	header = (t_block *)((char *)ptr - sizeof(t_block));
-	if (header->size != 0 && header->size
-		!= header->checksum && header->checksum != 0)
+	if ((header->size == 0) || (header->size
+		!= header->checksum) || (header->checksum == 0))
 		return ;
 	if (header->size > (int)g_head.m_size)
 		unmap_heap((t_heap *)header - 1);
